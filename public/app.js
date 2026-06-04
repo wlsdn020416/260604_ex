@@ -250,6 +250,8 @@ const scrollToTop = () => {
 };
 
 const renderMessage = ({ role, provider, model, content, isError = false, isLoading = false }) => {
+  document.querySelector("#emptyState")?.remove();
+
   const article = document.createElement("article");
   article.className = `message ${role}${isError ? " error" : ""}${isLoading ? " loading" : ""}`;
   const label = role === "user" ? "나" : provider;
