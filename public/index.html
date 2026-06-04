@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 챗봇</title>
+    <style>
+      #chatForm {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: start;
+      }
+
+      #chatContainer {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="chatForm">
+      <select name="provider">
+        <option value="google">google</option>
+        <option value="groq">groq</option>
+      </select>
+
+      <select name="model">
+        <option value="gemma-4-26b-a4b-it">google - gemma</option>
+        <option value="openai/gpt-oss-120b">groq - gpt-oss</option>
+      </select>
+
+      <input name="ask" placeholder="질문을 입력하세요" />
+      <button>물어보기</button>
+    </form>
+
+    <div id="chatContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const chatForm = document.querySelector("#chatForm");
+      const chatContainer = document.querySelector("#chatContainer");
+
+      chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+       const response = await axios.post(
+  "/chat",
+  Object.fromEntries(formData)
+);
+
+const { answer } = response.data;
+
+const p = document.createElement("p");
+
+p.innerHTML = `
+  <strong>질문</strong> : ${formData.get("ask")}<br>
+  <strong>대답</strong> : ${answer}
+`;
+
+chatContainer.append(p);
+      });
+    </script>
+  </body>
+</html>
