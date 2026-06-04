@@ -245,8 +245,8 @@ const getChatTitle = (conversation) => {
   return firstUserMessage?.content.slice(0, 34) || conversation.title;
 };
 
-const scrollToLatest = () => {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+const scrollToTop = () => {
+  chatContainer.scrollTop = 0;
 };
 
 const renderMessage = ({ role, provider, model, content, isError = false, isLoading = false }) => {
@@ -271,7 +271,7 @@ const renderMessage = ({ role, provider, model, content, isError = false, isLoad
   `;
 
   chatContainer.append(article);
-  scrollToLatest();
+  scrollToTop();
   return article;
 };
 
@@ -285,7 +285,7 @@ const renderChat = () => {
   }
 
   activeConversation.messages.forEach((message) => renderMessage(message));
-  scrollToLatest();
+  scrollToTop();
 };
 
 const renderChatList = () => {
@@ -332,7 +332,7 @@ const updateAssistantMessage = ({ article, provider, model, content, isError = f
       <div class="markdown">${renderMarkdown(content)}</div>
     </div>
   `;
-  scrollToLatest();
+  scrollToTop();
 };
 
 const addMessageToActiveChat = (message) => {
