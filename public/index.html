@@ -5,60 +5,645 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI 챗봇</title>
     <style>
-      #chatForm {
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --ink: #172033;
+        --muted: #667085;
+        --line: #dfe5ef;
+        --accent: #2563eb;
+        --accent-strong: #1d4ed8;
+        --mint: #10b981;
+        --coral: #f97316;
+        --shadow: 0 22px 60px rgba(23, 32, 51, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 12% 14%, rgba(37, 99, 235, 0.14), transparent 30%),
+          radial-gradient(circle at 82% 18%, rgba(16, 185, 129, 0.12), transparent 28%),
+          linear-gradient(135deg, #f8fbff 0%, var(--bg) 46%, #eef4ff 100%);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 48px 0;
+      }
+
+      .topbar {
         display: flex;
-        flex-direction: column;
-        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        border-radius: 8px;
+        color: white;
+        background:
+          linear-gradient(140deg, rgba(255, 255, 255, 0.22), transparent 45%),
+          linear-gradient(135deg, var(--accent), #0f766e);
+        box-shadow: 0 16px 34px rgba(37, 99, 235, 0.28);
+      }
+
+      .brand-mark svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      h1,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(1.65rem, 3vw, 2.65rem);
+        line-height: 1.06;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid rgba(16, 185, 129, 0.22);
+        border-radius: 999px;
+        color: #047857;
+        background: rgba(236, 253, 245, 0.92);
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--mint);
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.12);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 390px minmax(0, 1fr);
+        gap: 22px;
         align-items: start;
       }
 
+      .panel {
+        border: 1px solid rgba(223, 229, 239, 0.92);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      #chatForm {
+        display: grid;
+        gap: 18px;
+        padding: 24px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: #344054;
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: #fbfdff;
+        outline: 0;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease,
+          background 160ms ease;
+      }
+
+      select {
+        min-height: 46px;
+        padding: 0 40px 0 13px;
+        appearance: none;
+        background-image:
+          linear-gradient(45deg, transparent 50%, #475467 50%),
+          linear-gradient(135deg, #475467 50%, transparent 50%);
+        background-position:
+          calc(100% - 18px) 19px,
+          calc(100% - 13px) 19px;
+        background-size:
+          5px 5px,
+          5px 5px;
+        background-repeat: no-repeat;
+      }
+
+      textarea {
+        min-height: 164px;
+        resize: vertical;
+        padding: 14px;
+        line-height: 1.55;
+      }
+
+      select:focus,
+      textarea:focus {
+        border-color: rgba(37, 99, 235, 0.8);
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      button {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 18px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        box-shadow: 0 14px 26px rgba(37, 99, 235, 0.26);
+        cursor: pointer;
+        font-weight: 800;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          opacity 160ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 32px rgba(37, 99, 235, 0.32);
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.72;
+        transform: none;
+      }
+
+      button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+
+      .chat-panel {
+        min-height: 520px;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .chat-header h2 {
+        margin: 0;
+        font-size: 1.06rem;
+      }
+
+      .count {
+        display: inline-flex;
+        min-width: 34px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        color: #7c2d12;
+        background: #fff7ed;
+        font-size: 0.85rem;
+        font-weight: 800;
+      }
+
       #chatContainer {
-        margin-top: 20px;
+        display: grid;
+        gap: 14px;
+        max-height: 640px;
+        overflow: auto;
+        padding: 20px;
+      }
+
+      .empty-state {
+        display: grid;
+        min-height: 430px;
+        place-items: center;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .empty-visual {
+        display: grid;
+        width: 92px;
+        height: 92px;
+        margin: 0 auto 18px;
+        place-items: center;
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 8px;
+        color: var(--accent);
+        background:
+          linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(16, 185, 129, 0.08)),
+          #fff;
+      }
+
+      .empty-visual svg {
+        width: 44px;
+        height: 44px;
+      }
+
+      .empty-state strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ink);
+        font-size: 1.08rem;
+      }
+
+      .message {
+        display: grid;
+        gap: 12px;
+        border: 1px solid rgba(223, 229, 239, 0.88);
+        border-radius: 8px;
+        padding: 16px;
+        background: #ffffff;
+        box-shadow: 0 10px 24px rgba(23, 32, 51, 0.06);
+        animation: rise 180ms ease-out;
+      }
+
+      .message-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .tag {
+        display: inline-flex;
+        min-height: 26px;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0 10px;
+        color: #1e3a8a;
+        background: #eff6ff;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .tag.model {
+        color: #9a3412;
+        background: #fff7ed;
+      }
+
+      .bubble {
+        display: grid;
+        gap: 6px;
+      }
+
+      .bubble strong {
+        color: #344054;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+
+      .bubble p {
+        color: #202b3f;
+        line-height: 1.65;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .answer {
+        border-left: 4px solid var(--mint);
+        padding-left: 12px;
+      }
+
+      .error {
+        border-color: rgba(239, 68, 68, 0.28);
+        background: #fffafa;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 860px) {
+        .shell {
+          width: min(100% - 28px, 680px);
+          padding: 30px 0;
+        }
+
+        .topbar,
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          display: grid;
+          align-items: start;
+        }
+
+        .status-pill {
+          justify-self: start;
+        }
+
+        .workspace {
+          display: grid;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .field-grid,
+        .actions {
+          grid-template-columns: 1fr;
+        }
+
+        .brand {
+          align-items: start;
+        }
+
+        .brand-mark {
+          width: 42px;
+          height: 42px;
+        }
+
+        .actions {
+          display: grid;
+        }
+
+        button {
+          width: 100%;
+        }
+
+        #chatForm,
+        .chat-header,
+        #chatContainer {
+          padding: 18px;
+        }
       }
     </style>
   </head>
   <body>
-    <form id="chatForm">
-      <select name="provider">
-        <option value="google">google</option>
-        <option value="groq">groq</option>
-      </select>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 3.5 14.6 9l5.9.8-4.3 4.1 1 5.8L12 16.9 6.8 19.7l1-5.8-4.3-4.1L9.4 9 12 3.5Z"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1>AI 챗봇</h1>
+            <p class="subtitle">Google과 Groq 모델을 골라 질문하고 답변을 비교하세요.</p>
+          </div>
+        </div>
+        <div class="status-pill" aria-label="서비스 상태">
+          <span class="status-dot"></span>
+          배포용 UI
+        </div>
+      </header>
 
-      <select name="model">
-        <option value="gemma-4-26b-a4b-it">google - gemma</option>
-        <option value="openai/gpt-oss-120b">groq - gpt-oss</option>
-      </select>
+      <section class="workspace">
+        <form id="chatForm" class="panel">
+          <div class="field-grid">
+            <label>
+              Provider
+              <select name="provider">
+                <option value="google">Google</option>
+                <option value="groq">Groq</option>
+              </select>
+            </label>
 
-      <input name="ask" placeholder="질문을 입력하세요" />
-      <button>물어보기</button>
-    </form>
+            <label>
+              Model
+              <select name="model">
+                <option value="gemma-4-26b-a4b-it">Gemma 4 26B</option>
+                <option value="openai/gpt-oss-120b">GPT OSS 120B</option>
+              </select>
+            </label>
+          </div>
 
-    <div id="chatContainer"></div>
+          <label>
+            Prompt
+            <textarea name="ask" placeholder="질문을 입력하세요"></textarea>
+          </label>
+
+          <div class="actions">
+            <button type="submit">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="m5 12 14-7-4 14-3-6-7-1Z"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.9"
+                />
+              </svg>
+              물어보기
+            </button>
+            <p class="hint">답변은 오른쪽 대화 기록에 카드 형태로 쌓입니다.</p>
+          </div>
+        </form>
+
+        <section class="panel chat-panel" aria-live="polite">
+          <div class="chat-header">
+            <h2>대화 기록</h2>
+            <span class="count" id="chatCount">0</span>
+          </div>
+          <div id="chatContainer">
+            <div class="empty-state" id="emptyState">
+              <div>
+                <div class="empty-visual" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M7 8h10M7 12h6m8-1c0 4.4-4 8-9 8-1 0-2-.1-2.9-.4L4 20l1.6-4.1A7.2 7.2 0 0 1 3 11c0-4.4 4-8 9-8s9 3.6 9 8Z"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.8"
+                    />
+                  </svg>
+                </div>
+                <strong>아직 대화가 없습니다</strong>
+                <p>왼쪽에서 모델과 질문을 선택하면 답변이 여기에 나타납니다.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const chatForm = document.querySelector("#chatForm");
       const chatContainer = document.querySelector("#chatContainer");
+      const emptyState = document.querySelector("#emptyState");
+      const chatCount = document.querySelector("#chatCount");
+      const submitButton = chatForm.querySelector("button");
+      let messageCount = 0;
+
+      const escapeHTML = (value) =>
+        value.replace(/[&<>"']/g, (char) => {
+          const entities = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;",
+          };
+          return entities[char];
+        });
+
+      const appendMessage = ({ provider, model, ask, answer, isError = false }) => {
+        emptyState?.remove();
+        messageCount += 1;
+        chatCount.textContent = messageCount;
+
+        const article = document.createElement("article");
+        article.className = `message${isError ? " error" : ""}`;
+        article.innerHTML = `
+          <div class="message-meta">
+            <span class="tag">${escapeHTML(provider)}</span>
+            <span class="tag model">${escapeHTML(model)}</span>
+          </div>
+          <div class="bubble">
+            <strong>질문</strong>
+            <p>${escapeHTML(ask)}</p>
+          </div>
+          <div class="bubble answer">
+            <strong>${isError ? "오류" : "대답"}</strong>
+            <p>${escapeHTML(answer)}</p>
+          </div>
+        `;
+
+        chatContainer.prepend(article);
+      };
 
       chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const formData = new FormData(event.target);
-       const response = await axios.post(
-  "/chat",
-  Object.fromEntries(formData)
-);
+        const ask = formData.get("ask").trim();
+        if (!ask) {
+          chatForm.querySelector("textarea").focus();
+          return;
+        }
 
-const { answer } = response.data;
+        submitButton.disabled = true;
+        submitButton.textContent = "답변 생성 중...";
 
-const p = document.createElement("p");
+        try {
+          const payload = Object.fromEntries(formData);
+          payload.ask = ask;
+          const response = await axios.post("/chat", payload);
+          const { answer, provider, model } = response.data;
 
-p.innerHTML = `
-  <strong>질문</strong> : ${formData.get("ask")}<br>
-  <strong>대답</strong> : ${answer}
-`;
-
-chatContainer.append(p);
+          appendMessage({
+            provider,
+            model,
+            ask,
+            answer,
+          });
+          event.target.reset();
+        } catch (error) {
+          appendMessage({
+            provider: formData.get("provider"),
+            model: formData.get("model"),
+            ask,
+            answer: "요청 처리 중 문제가 발생했습니다. API 키와 서버 로그를 확인해 주세요.",
+            isError: true,
+          });
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="m5 12 14-7-4 14-3-6-7-1Z"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.9"
+              />
+            </svg>
+            물어보기
+          `;
+        }
       });
     </script>
   </body>
