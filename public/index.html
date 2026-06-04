@@ -10,7 +10,7 @@
     <meta name="keywords" content="AI 챗봇, Gemini, Groq, Google AI, 마크다운 답변, 인공지능 채팅" />
     <meta name="author" content="AI 챗봇" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#2d2a2e" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:title" content="AI 챗봇 | Google & Groq 모델 채팅" />
@@ -18,7 +18,7 @@
       property="og:description"
       content="Google과 Groq 모델을 선택해 프롬프트를 입력하고 마크다운 답변을 받아보세요."
     />
-    <meta property="og:image" content="/favicon.svg" />
+    <meta property="og:image" content="favicon.svg" />
     <meta property="og:site_name" content="AI 챗봇" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="AI 챗봇 | Google & Groq 모델 채팅" />
@@ -26,501 +26,12 @@
       name="twitter:description"
       content="Google과 Groq 모델을 선택해 프롬프트를 입력하고 마크다운 답변을 받아보세요."
     />
-    <meta name="twitter:image" content="/favicon.svg" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="canonical" href="/" />
+    <meta name="twitter:image" content="favicon.svg" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="canonical" href="./" />
     <title>AI 챗봇 | Google & Groq 모델 채팅</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f7f8fb;
-        --panel: #ffffff;
-        --ink: #111827;
-        --muted: #667085;
-        --line: #e4e7ec;
-        --soft: #f2f4f7;
-        --accent: #2563eb;
-        --accent-strong: #1d4ed8;
-        --mint: #10b981;
-        --danger: #ef4444;
-        --shadow: 0 18px 48px rgba(17, 24, 39, 0.1);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        min-height: 100vh;
-        margin: 0;
-        color: var(--ink);
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
-        background:
-          radial-gradient(circle at 18% 8%, rgba(37, 99, 235, 0.12), transparent 28%),
-          radial-gradient(circle at 84% 16%, rgba(16, 185, 129, 0.1), transparent 26%),
-          var(--bg);
-      }
-
-      button,
-      select,
-      textarea {
-        font: inherit;
-      }
-
-      button {
-        border: 0;
-      }
-
-      .app {
-        display: grid;
-        min-height: 100vh;
-        grid-template-rows: auto minmax(0, 1fr);
-      }
-
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 5;
-        border-bottom: 1px solid rgba(228, 231, 236, 0.82);
-        background: rgba(247, 248, 251, 0.82);
-        backdrop-filter: blur(16px);
-      }
-
-      .topbar-inner {
-        display: flex;
-        width: min(960px, calc(100% - 32px));
-        min-height: 66px;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin: 0 auto;
-      }
-
-      .brand {
-        display: flex;
-        min-width: 0;
-        align-items: center;
-        gap: 11px;
-      }
-
-      .brand-mark {
-        display: grid;
-        width: 36px;
-        height: 36px;
-        flex: 0 0 auto;
-        place-items: center;
-        border-radius: 8px;
-        color: #fff;
-        background:
-          linear-gradient(140deg, rgba(255, 255, 255, 0.22), transparent 48%),
-          linear-gradient(135deg, #2563eb, #0f766e);
-        box-shadow: 0 12px 28px rgba(37, 99, 235, 0.24);
-      }
-
-      .brand-mark svg,
-      .send-button svg {
-        width: 18px;
-        height: 18px;
-      }
-
-      h1,
-      p {
-        margin: 0;
-      }
-
-      h1 {
-        overflow: hidden;
-        font-size: 1.02rem;
-        font-weight: 800;
-        letter-spacing: 0;
-        line-height: 1.2;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .topbar-note {
-        color: var(--muted);
-        font-size: 0.88rem;
-        white-space: nowrap;
-      }
-
-      .chat-shell {
-        display: grid;
-        width: min(960px, calc(100% - 32px));
-        min-height: 0;
-        grid-template-rows: minmax(0, 1fr) auto;
-        margin: 0 auto;
-      }
-
-      #chatContainer {
-        display: flex;
-        min-height: 0;
-        flex-direction: column;
-        gap: 26px;
-        overflow: auto;
-        padding: 38px 0 24px;
-        scroll-behavior: smooth;
-      }
-
-      .empty-state {
-        display: grid;
-        min-height: min(560px, calc(100vh - 230px));
-        place-items: center;
-        text-align: center;
-      }
-
-      .empty-content {
-        display: grid;
-        justify-items: center;
-        gap: 14px;
-      }
-
-      .empty-visual {
-        display: grid;
-        width: 70px;
-        height: 70px;
-        place-items: center;
-        border: 1px solid rgba(37, 99, 235, 0.14);
-        border-radius: 8px;
-        color: var(--accent);
-        background: #fff;
-        box-shadow: 0 14px 36px rgba(17, 24, 39, 0.08);
-      }
-
-      .empty-visual svg {
-        width: 34px;
-        height: 34px;
-      }
-
-      .empty-state strong {
-        font-size: clamp(1.55rem, 4vw, 2.4rem);
-        letter-spacing: 0;
-      }
-
-      .empty-state p {
-        max-width: 520px;
-        color: var(--muted);
-        line-height: 1.6;
-      }
-
-      .message {
-        display: grid;
-        gap: 10px;
-        animation: rise 180ms ease-out;
-      }
-
-      .message.user {
-        justify-items: end;
-      }
-
-      .message.assistant {
-        justify-items: start;
-      }
-
-      .message-meta {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--muted);
-        font-size: 0.78rem;
-        font-weight: 700;
-      }
-
-      .avatar {
-        display: grid;
-        width: 28px;
-        height: 28px;
-        place-items: center;
-        border-radius: 50%;
-        color: #fff;
-        background: linear-gradient(135deg, #2563eb, #0f766e);
-        font-size: 0.76rem;
-        font-weight: 900;
-      }
-
-      .message.user .avatar {
-        background: #111827;
-      }
-
-      .bubble {
-        max-width: min(760px, 88%);
-        border-radius: 8px;
-        padding: 15px 17px;
-        line-height: 1.68;
-        word-break: break-word;
-      }
-
-      .message.user .bubble {
-        color: #111827;
-        background: #e9eef8;
-      }
-
-      .message.assistant .bubble {
-        border: 1px solid rgba(228, 231, 236, 0.92);
-        background: rgba(255, 255, 255, 0.92);
-        box-shadow: 0 12px 34px rgba(17, 24, 39, 0.07);
-      }
-
-      .message.error .bubble {
-        border-color: rgba(239, 68, 68, 0.22);
-        background: #fff7f7;
-      }
-
-      .markdown {
-        color: #202b3f;
-        line-height: 1.68;
-        word-break: break-word;
-      }
-
-      .markdown > :first-child {
-        margin-top: 0;
-      }
-
-      .markdown > :last-child {
-        margin-bottom: 0;
-      }
-
-      .markdown p,
-      .markdown ul,
-      .markdown ol,
-      .markdown h3,
-      .markdown h4,
-      .markdown blockquote,
-      .markdown pre {
-        margin: 0 0 12px;
-      }
-
-      .markdown h3,
-      .markdown h4 {
-        color: #172033;
-        line-height: 1.35;
-      }
-
-      .markdown h3 {
-        font-size: 1.04rem;
-      }
-
-      .markdown h4 {
-        font-size: 0.98rem;
-      }
-
-      .markdown ul,
-      .markdown ol {
-        padding-left: 22px;
-      }
-
-      .markdown li + li {
-        margin-top: 5px;
-      }
-
-      .markdown code {
-        border-radius: 6px;
-        padding: 2px 6px;
-        color: #0f172a;
-        background: #eef2ff;
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        font-size: 0.92em;
-      }
-
-      .markdown pre {
-        overflow: auto;
-        border: 1px solid #dbe3f0;
-        border-radius: 8px;
-        padding: 12px;
-        background: #0f172a;
-      }
-
-      .markdown pre code {
-        display: block;
-        padding: 0;
-        color: #e5e7eb;
-        background: transparent;
-        white-space: pre;
-      }
-
-      .markdown blockquote {
-        border-left: 4px solid #93c5fd;
-        padding-left: 12px;
-        color: #475467;
-      }
-
-      .markdown a {
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      .composer-wrap {
-        position: sticky;
-        bottom: 0;
-        padding: 0 0 22px;
-        background: linear-gradient(180deg, rgba(247, 248, 251, 0), var(--bg) 22%);
-      }
-
-      #chatForm {
-        display: grid;
-        gap: 8px;
-        border: 1px solid rgba(228, 231, 236, 0.92);
-        border-radius: 8px;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.96);
-        box-shadow: var(--shadow);
-      }
-
-      .settings-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        padding: 0 2px;
-      }
-
-      .mini-field {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        min-height: 32px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 0 10px;
-        color: #344054;
-        background: #f9fafb;
-        font-size: 0.78rem;
-        font-weight: 800;
-      }
-
-      .mini-field select {
-        width: auto;
-        min-height: 28px;
-        max-width: 190px;
-        border: 0;
-        padding: 0 20px 0 0;
-        color: var(--ink);
-        background:
-          linear-gradient(45deg, transparent 50%, #475467 50%) calc(100% - 8px) 12px / 5px 5px no-repeat,
-          linear-gradient(135deg, #475467 50%, transparent 50%) calc(100% - 3px) 12px / 5px 5px no-repeat;
-        appearance: none;
-        outline: 0;
-        font-size: 0.82rem;
-        font-weight: 700;
-      }
-
-      .input-row {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 10px;
-        align-items: end;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 58px;
-        max-height: 180px;
-        resize: vertical;
-        border: 0;
-        border-radius: 8px;
-        padding: 13px 14px;
-        color: var(--ink);
-        background: var(--soft);
-        line-height: 1.55;
-        outline: 0;
-      }
-
-      textarea:focus {
-        box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.22);
-        background: #fff;
-      }
-
-      .send-button {
-        display: inline-grid;
-        width: 48px;
-        height: 48px;
-        place-items: center;
-        border-radius: 8px;
-        color: #fff;
-        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-        box-shadow: 0 12px 22px rgba(37, 99, 235, 0.24);
-        cursor: pointer;
-        transition:
-          transform 160ms ease,
-          box-shadow 160ms ease,
-          opacity 160ms ease;
-      }
-
-      .send-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 16px 28px rgba(37, 99, 235, 0.3);
-      }
-
-      .send-button:disabled {
-        cursor: wait;
-        opacity: 0.7;
-        transform: none;
-      }
-
-      .composer-hint {
-        padding: 0 2px;
-        color: var(--muted);
-        font-size: 0.76rem;
-        text-align: center;
-      }
-
-      @keyframes rise {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (max-width: 680px) {
-        .topbar-inner,
-        .chat-shell {
-          width: min(100% - 24px, 620px);
-        }
-
-        .topbar-note {
-          display: none;
-        }
-
-        #chatContainer {
-          gap: 22px;
-          padding-top: 26px;
-        }
-
-        .bubble {
-          max-width: 94%;
-        }
-
-        .settings-row {
-          display: grid;
-          grid-template-columns: 1fr;
-        }
-
-        .mini-field {
-          justify-content: space-between;
-        }
-
-        .mini-field select {
-          max-width: 58vw;
-        }
-
-        .input-row {
-          grid-template-columns: minmax(0, 1fr) 44px;
-        }
-
-        .send-button {
-          width: 44px;
-          height: 44px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app">
@@ -540,7 +51,25 @@
             </div>
             <h1>AI 챗봇</h1>
           </div>
-          <p class="topbar-note">Google / Groq 모델과 대화하기</p>
+          <div class="topbar-actions">
+            <button class="utility-button" id="newChatButton" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
+              </svg>
+              <span>새 채팅</span>
+            </button>
+            <button class="utility-button" id="chatListButton" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M8 7h13M8 12h13M8 17h13M3 7h.01M3 12h.01M3 17h.01"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                />
+              </svg>
+              <span>채팅 목록</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -600,207 +129,23 @@
               </button>
             </div>
           </form>
-          <p class="composer-hint">Enter로 줄바꿈하고, 보내기는 버튼을 누르세요.</p>
         </div>
       </section>
     </main>
 
-    <script>
-      const chatForm = document.querySelector("#chatForm");
-      const chatContainer = document.querySelector("#chatContainer");
-      const emptyState = document.querySelector("#emptyState");
-      const submitButton = chatForm.querySelector("button");
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="chat-drawer" id="chatDrawer" aria-label="채팅 목록">
+      <div class="drawer-header">
+        <h2>채팅 목록</h2>
+        <button class="icon-button" id="closeDrawerButton" type="button" aria-label="채팅 목록 닫기">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
+          </svg>
+        </button>
+      </div>
+      <div class="chat-list" id="chatList"></div>
+    </aside>
 
-      const escapeHTML = (value) =>
-        String(value).replace(/[&<>"']/g, (char) => {
-          const entities = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;",
-          };
-          return entities[char];
-        });
-
-      const renderInlineMarkdown = (value) =>
-        value
-          .replace(/`([^`]+)`/g, "<code>$1</code>")
-          .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-          .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-          .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
-
-      const renderMarkdown = (value) => {
-        const lines = String(value).replace(/\r\n?/g, "\n").split("\n");
-        const html = [];
-        let index = 0;
-
-        while (index < lines.length) {
-          const line = lines[index];
-
-          if (!line.trim()) {
-            index += 1;
-            continue;
-          }
-
-          if (line.startsWith("```")) {
-            const codeLines = [];
-            index += 1;
-
-            while (index < lines.length && !lines[index].startsWith("```")) {
-              codeLines.push(lines[index]);
-              index += 1;
-            }
-
-            index += 1;
-            html.push(`<pre><code>${escapeHTML(codeLines.join("\n"))}</code></pre>`);
-            continue;
-          }
-
-          const heading = line.match(/^(#{1,4})\s+(.+)$/);
-          if (heading) {
-            const level = Math.min(heading[1].length + 2, 4);
-            html.push(`<h${level}>${renderInlineMarkdown(escapeHTML(heading[2]))}</h${level}>`);
-            index += 1;
-            continue;
-          }
-
-          if (/^[-*]\s+/.test(line)) {
-            const items = [];
-            while (index < lines.length && /^[-*]\s+/.test(lines[index])) {
-              items.push(`<li>${renderInlineMarkdown(escapeHTML(lines[index].replace(/^[-*]\s+/, "")))}</li>`);
-              index += 1;
-            }
-            html.push(`<ul>${items.join("")}</ul>`);
-            continue;
-          }
-
-          if (/^\d+\.\s+/.test(line)) {
-            const items = [];
-            while (index < lines.length && /^\d+\.\s+/.test(lines[index])) {
-              items.push(`<li>${renderInlineMarkdown(escapeHTML(lines[index].replace(/^\d+\.\s+/, "")))}</li>`);
-              index += 1;
-            }
-            html.push(`<ol>${items.join("")}</ol>`);
-            continue;
-          }
-
-          if (/^>\s?/.test(line)) {
-            const quotes = [];
-            while (index < lines.length && /^>\s?/.test(lines[index])) {
-              quotes.push(lines[index].replace(/^>\s?/, ""));
-              index += 1;
-            }
-            html.push(`<blockquote>${renderInlineMarkdown(escapeHTML(quotes.join("<br>")))}</blockquote>`);
-            continue;
-          }
-
-          const paragraph = [];
-          while (
-            index < lines.length &&
-            lines[index].trim() &&
-            !lines[index].startsWith("```") &&
-            !/^(#{1,4})\s+/.test(lines[index]) &&
-            !/^[-*]\s+/.test(lines[index]) &&
-            !/^\d+\.\s+/.test(lines[index]) &&
-            !/^>\s?/.test(lines[index])
-          ) {
-            paragraph.push(lines[index]);
-            index += 1;
-          }
-
-          html.push(`<p>${renderInlineMarkdown(escapeHTML(paragraph.join("\n"))).replace(/\n/g, "<br>")}</p>`);
-        }
-
-        return html.join("");
-      };
-
-      window.renderMarkdown = renderMarkdown;
-      document.documentElement.dataset.markdownReady = "true";
-
-      const scrollToLatest = () => {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      };
-
-      const createMessage = ({ role, provider, model, content, isError = false }) => {
-        emptyState?.remove();
-
-        const article = document.createElement("article");
-        article.className = `message ${role}${isError ? " error" : ""}`;
-        const label = role === "user" ? "나" : provider;
-        const avatar = role === "user" ? "나" : "AI";
-        const meta = role === "user" ? "질문" : `${provider} · ${model}`;
-        const body = role === "user" ? `<p>${escapeHTML(content)}</p>` : `<div class="markdown">${renderMarkdown(content)}</div>`;
-
-        article.innerHTML = `
-          <div class="message-meta">
-            <span class="avatar" aria-hidden="true">${escapeHTML(avatar)}</span>
-            <span>${escapeHTML(label)}</span>
-            <span>${escapeHTML(meta)}</span>
-          </div>
-          <div class="bubble">${body}</div>
-        `;
-
-        chatContainer.append(article);
-        scrollToLatest();
-      };
-
-      chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.target);
-        const ask = formData.get("ask").trim();
-        if (!ask) {
-          chatForm.querySelector("textarea").focus();
-          return;
-        }
-
-        const provider = formData.get("provider");
-        const model = formData.get("model");
-
-        createMessage({
-          role: "user",
-          provider,
-          model,
-          content: ask,
-        });
-
-        submitButton.disabled = true;
-        event.target.querySelector("textarea").value = "";
-
-        try {
-          const response = await fetch("/chat", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ provider, model, ask }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Chat request failed");
-          }
-
-          const data = await response.json();
-          createMessage({
-            role: "assistant",
-            provider: data.provider,
-            model: data.model,
-            content: data.answer,
-          });
-        } catch (error) {
-          createMessage({
-            role: "assistant",
-            provider,
-            model,
-            content: "요청 처리 중 문제가 발생했습니다. API 키와 서버 로그를 확인해 주세요.",
-            isError: true,
-          });
-        } finally {
-          submitButton.disabled = false;
-          chatForm.querySelector("textarea").focus();
-        }
-      });
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>

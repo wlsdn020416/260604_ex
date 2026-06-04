@@ -4,12 +4,12 @@
   "description": "Google과 Groq 모델을 선택해 질문하고 마크다운 답변을 확인할 수 있는 AI 챗봇입니다.",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "favicon.svg",
       "sizes": "64x64",
       "type": "image/svg+xml"
     }
   ],
-  "theme_color": "#2563eb",
-  "background_color": "#f7f8fb",
+  "theme_color": "#2d2a2e",
+  "background_color": "#2d2a2e",
   "display": "standalone"
 }
